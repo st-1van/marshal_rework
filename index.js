@@ -46,8 +46,10 @@ app.get('/cabinet/posts/:id', checkAuth, PostController.getOne);
 app.post('/cabinet/posts', checkAuth, postValidation, handleValidationErrors, PostController.createPost);
 app.delete('/cabinet/posts/:id', checkAuth, PostController.remove);
 
-// app.put('/cabinet/take-car',checkAuth, takeCar);
-// app.put('/cabinet/drop-car',checkAuth, dropCar);
+app.get('/cabinet/cars', checkAuth, CarController.getAllCars )
+app.get('/cabinet/free-cars', checkAuth, CarController.getFreeCars )
+app.post('/cabinet/take-car', checkAuth, CarController.takeCar);
+// app.put('/cabinet/drop-car', checkAuth, dropCar);
 
 app.post('/upload', checkAuth, upload.single('image'), (req,res)=>{
     res.json({

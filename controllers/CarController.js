@@ -1,4 +1,6 @@
+const { json } = require('express');
 const CarModel = require('../models/Car.js');
+const UserModel = require('../models/User.js')
 
 const addCar = async (req, res)=>{
     try {
@@ -42,5 +44,114 @@ const deleteCar = async (req,res)=>{
         })        
     }
 }
+const getAllCars = async (req,res)=>{
+    try {
+        const cars = await CarModel.find({ /* company:res.locals.driverCompany */ }).populate('user').exec();
 
-module.exports={deleteCar, addCar};
+        res.json(cars)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message:'не знайшли авто'
+        })
+    }  
+
+}
+
+const getFreeCars = async (req,res)=>{
+    var carList = [];
+    var carIdList = [];
+    var carNumberList = [];
+
+    CarModel.find({ driver: null, /* company:res.locals.driverCompany */ })
+    .then(
+      (foundCars) => {
+        foundCars.forEach((car) => {
+          carList.push(car.brand);
+          carIdList.push(car._id);
+          carNumberList.push(car.carNumber)
+        });
+
+        res.json({ carIdList, carList, carNumberList});
+      })
+    .catch((error) => {
+        console.log(error)
+        res.status(500).json({
+            message:'не знайшли авто'
+        })
+    })
+}
+
+const takeCar = async (req,res)=>{
+    CarModel.findOneAndUpdate({
+        _id: req.body.carId
+      },
+        {
+        user: req.userId,
+        }).then(() => {
+          console.log('car was taken, info is updated');
+        }).catch((err) => {
+        console.log('An error occurred:', err);
+        return  res.status (500).json({
+          message:'error with car updating'
+        });
+        });
+  
+    UserModel.findOneAndUpdate({
+        _id: req.userId
+      },
+        {
+          car: req.body.carId,
+        }).then(() => {
+          console.log('user has took the car, info is updated');
+        }).catch((err) => {
+            console.log('An error occurred:', err);
+            return  res.status (500).json({
+              message:'error with user updating'
+            });
+        });
+    res.send(json(
+        "data was update. Carlog is adding"
+    ))
+}
+
+const dropCar = (req, res) => {
+  
+    CarModel.findOneAndUpdate(
+      {
+        _id: carId
+      },
+      {
+        user: null,
+      }
+    )
+      .then(()=>{
+        console.log('car data is updated');  
+      })
+      .catch((err) => {
+        console.log('An error occurred here:', err);
+      });
+  
+    driverModel.findByIdAndUpdate(
+      {
+        _id: req.userId
+      },
+      {
+        car: null
+      }
+    )
+    .then(()=>{
+      console.log('driver data is updated');  
+    })
+      .catch((err) => {
+        console.log('An error occurred:', err);
+      });
+    
+      res.send(json(
+        "data was update. Carlog is adding"
+    ))
+
+  };
+
+
+module.exports={deleteCar, addCar, getAllCars, getFreeCars, takeCar, dropCar};
