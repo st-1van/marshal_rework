@@ -8,13 +8,14 @@ const { Result } = require('express-validator');
 
 const createPost = async (req,res)=>{
     try {
-        console.log('user is '+ req.userId)
+        console.log('user is '+ req.userId);
+        console.log('car is'+  req.carId);
         const post = new PostModel({
             text:req.body.text,
             urgency:req.body.urgency,
             problem:req.body.problem,
             user:req.userId,
-            car:null,
+            car: null,
         })
 
         const newPost = await post.save();
@@ -40,7 +41,7 @@ const  postDataUpdate = (req,res,newPost)=> {
         $push: { posts: newPost._id }
       }).then().catch((err) => {
         console.log('An error occurred:', err);
-        return  res.statu (500).json({
+        return  res.status (500).json({
           message:'error with user updating'
         });
       });
