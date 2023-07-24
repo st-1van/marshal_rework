@@ -1,6 +1,6 @@
-import CarModel from '../models/Car.js'
+const CarModel = require('../models/Car.js');
 
-export const addCar = async (req, res)=>{
+const addCar = async (req, res)=>{
     try {
    
         const doc = new CarModel({
@@ -22,7 +22,7 @@ export const addCar = async (req, res)=>{
     }       
 }
 
-export const deleteCar = async (req,res)=>{
+const deleteCar = async (req,res)=>{
     try {
         const car = await CarModel.findOneAndDelete({carNumber:req.body.carNumber});
 
@@ -42,3 +42,5 @@ export const deleteCar = async (req,res)=>{
         })        
     }
 }
+
+module.exports={deleteCar, addCar};

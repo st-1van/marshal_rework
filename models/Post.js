@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 var postSchema = new mongoose.Schema({
     text: String,
@@ -19,4 +19,4 @@ var postSchema = new mongoose.Schema({
   }, { timestamps: true }
   );
   
-  export default mongoose.model('Post', postSchema);
+  module.exports = mongoose.model('Post', postSchema);

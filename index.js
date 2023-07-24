@@ -1,20 +1,21 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
+const express = require( 'express');
+const mongoose = require( 'mongoose');
+const cors = require( 'cors');
 
-import * as dotenv from 'dotenv'
+const dotenv = require( 'dotenv');
 dotenv.config()
 
-import {registerValidation, postValidation, loginValidation} from './validations.js'
-import {UserController, CarController, PostController} from './controllers/index.js'
-import {checkAuth, handleValidationErrors} from './utils/index.js';
-import upload from './middleware/DiskStorage.js';
-import { deleteTrialFile } from './middleware/deleteTrialFile.js';
-import { googleUpdate } from './controllers/googleApi.js';
+const {registerValidation, postValidation, loginValidation} = require( './validations.js');
+const {UserController, CarController, PostController} = require( './controllers/index.js');
+const {checkAuth, handleValidationErrors} = require( './utils/index.js');
+const upload = require( './middleware/DiskStorage.js');
+const { deleteTrialFile } = require( './middleware/deleteTrialFile.js');
+const { googleUpdate } = require( './controllers/googleApi.js');
 
 
 const dbConnect = "mongodb+srv://"+process.env.ADMIN_NAME+":"+process.env.ADMIN_PASS+"@cluster0.nerrton.mongodb.net/"+process.env.DBNAME+"?retryWrites=true&w=majority";
 
+mongoose.set('strictQuery', false);
 
 mongoose
     .connect(dbConnect)
@@ -32,7 +33,7 @@ app.get('/', (req,res)=>{
 })
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
-app.get('/auth/me', checkAuth,UserController.checkUser);    
+app.get('/auth/me', checkAuth, UserController.checkUser);    
 app.post('/auth/add-new-user', registerValidation, handleValidationErrors, UserController.addUser );
 
 app.post('/manage/add-car', checkAuth, handleValidationErrors, CarController.addCar);
@@ -45,14 +46,14 @@ app.get('/cabinet/posts/:id', checkAuth, PostController.getOne);
 app.post('/cabinet/posts', checkAuth, postValidation, handleValidationErrors, PostController.createPost);
 app.delete('/cabinet/posts/:id', checkAuth, PostController.remove);
 
-// app.update('/cabinet/take-car',checkAuth, takeCar);
-// app.update('/cabinet/drop-car',checkAuth, dropCar);
+// app.put('/cabinet/take-car',checkAuth, takeCar);
+// app.put('/cabinet/drop-car',checkAuth, dropCar);
 
-app.post('/upload',checkAuth,  upload.single('image'), (req,res)=>{
+app.post('/upload', checkAuth, upload.single('image'), (req,res)=>{
     res.json({
         url:`uploads/${req.userId}/${req.file.filename}`,
     });
-})
+}) 
 app.delete('/upload', checkAuth, deleteTrialFile);
 
 // app.post('/uploads', checkAuth,  upload.array('image',5), (req,res)=>{

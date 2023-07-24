@@ -1,14 +1,12 @@
-import PostModel from '../models/Post.js'
-import UserModel from "../models/User.js"
-
-import CarModel from "../models/Car.js";
-//import sessionUserData from '../middleware/UserSessionData.js';
-import upload from '../middleware/DiskStorage.js';
-import { Result } from 'express-validator';
+const PostModel = require('../models/Post.js');
+const UserModel = require('../models/User.js');
+const CarModel = require('../models/Car.js');
+const upload = require('../middleware/DiskStorage.js');
+const { Result } = require('express-validator');
 
 //тут не працює в інсомнії підвантаження одного або кількох файлів
 
-export const createPost = async (req,res)=>{
+const createPost = async (req,res)=>{
     try {
         console.log('user is '+ req.userId)
         const post = new PostModel({
@@ -33,7 +31,7 @@ export const createPost = async (req,res)=>{
 }
 
 
-const  postDataUpdate= (req,res,newPost)=> {  
+const  postDataUpdate = (req,res,newPost)=> {  
     
     UserModel.findOneAndUpdate({
       _id: req.userId
@@ -58,7 +56,7 @@ const  postDataUpdate= (req,res,newPost)=> {
       })     */
   };
 
-export const getAllPosts = async(req,res)=>{
+const getAllPosts = async(req,res)=>{
     try {
         const posts = await PostModel.find().populate('user').exec();
 
@@ -71,7 +69,7 @@ export const getAllPosts = async(req,res)=>{
     }  
   }
 
-export const getOne = async (req, res) => {
+const getOne = async (req, res) => {
     try {
       const postId = req.params.id;
   
@@ -93,7 +91,7 @@ export const getOne = async (req, res) => {
   };
   
 
-export const remove = async (req, res) => {
+const remove = async (req, res) => {
     try {
       const postId = req.params.id;
       const post = await PostModel.findByIdAndDelete(postId);
@@ -105,7 +103,7 @@ export const remove = async (req, res) => {
       }
   
       res.json({
-        success: true
+        success: 'post was deleted'
       });
     } catch (error) {
       console.log(error);
@@ -115,3 +113,4 @@ export const remove = async (req, res) => {
     }
   };
   
+module.exports= { createPost, getAllPosts, getOne, remove }

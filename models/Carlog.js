@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 var carLogSchema = new mongoose.Schema({
   
@@ -65,4 +65,4 @@ var carLogSchema = new mongoose.Schema({
   }, { timestamps: true }
   );
 
-  export default mongoose.model('CarLog', carLogSchema);
+module.exports = mongoose.model('CarLog', carLogSchema);

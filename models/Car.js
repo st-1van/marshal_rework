@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 var carSchema = new mongoose.Schema({
     brand: String,
@@ -25,4 +25,4 @@ var carSchema = new mongoose.Schema({
 });
 
 
-export default mongoose.model('Car', carSchema);
+module.exports = mongoose.model('Car', carSchema);

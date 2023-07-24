@@ -1,6 +1,6 @@
-import multer from 'multer';
-import { mkdirSync } from 'fs';
-import { extname } from 'path';
+const multer = require('multer');
+const { mkdirSync } = require('fs');
+const { extname } = require('path');
 
 // створення правильних папок і назв фото
 /* const storage = multer.diskStorage({
@@ -33,5 +33,5 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } })
 
-export default upload;
+module.exports = upload;
 

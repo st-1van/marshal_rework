@@ -1,7 +1,7 @@
-import { unlink } from 'fs';
+const { unlink } = require('fs');
 
 
-export const deleteTrialFile = (req, res) => {
+exports.deleteTrialFile = (req, res) => {
   const path = req.body.imgUrl;
   unlink(path, (err) => {
     if (err) {

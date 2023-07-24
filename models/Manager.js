@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const ManagerSchema = new mongoose.Schema({
       role:String,
@@ -28,4 +28,4 @@ const ManagerSchema = new mongoose.Schema({
       timestamps:true,
   });
 
-export default mongoose.model('Manager', ManagerSchema);
+module.exports = mongoose.model('Manager', ManagerSchema);

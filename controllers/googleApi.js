@@ -1,5 +1,5 @@
-import { google } from 'googleapis';
-import { join } from 'path';
+const { google } = require('googleapis');
+const { join } = require('path');
 const sheets = google.sheets('v4');
 
 
@@ -8,7 +8,7 @@ const spreadsheetId = '1bB_HUM-hKM2SLwSSMW9twQMULF_5hxWDnTIGa9Al5d4';
 
 // const credentialsPath = join(__dirname, '..', 'credentials.json');
 
-export const googleUpdate = async (req,res) =>{
+exports.googleUpdate = async (req,res) =>{
   const authClient = await authorize();
   let resources = [
     "EXECUTED data",

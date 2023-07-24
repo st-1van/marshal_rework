@@ -1,4 +1,10 @@
-export  * as  CarController from "./CarController.js";
-export * as PostController from "./PostController.js";
-export * as UserController from "./UserController.js";
+const {deleteCar, addCar} = require("./CarController.js");
+const { createPost, getAllPosts, getOne, remove } = require("./PostController.js");
+const {addManager, addUser, login, checkUser} = require("./UserController.js");
+
+
+exports.CarController = {deleteCar, addCar};
+exports.PostController = {createPost, getAllPosts, getOne, remove};
+exports.UserController = {addManager, addUser, login, checkUser};
+
 

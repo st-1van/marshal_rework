@@ -1,13 +1,13 @@
-import jwt from "jsonwebtoken";
-import bcrypt from 'bcrypt';
-import UserModel from '../models/User.js'
-import ManagerModel from "../models/Manager.js";
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const UserModel = require('../models/User.js');
+const ManagerModel = require("../models/Manager.js");
 
-export const addUser = async (req, res)=>{
+const addUser = async (req, res)=>{
     try {
     
         const password = req.body.password;
-        const salt = await bcrypt.genSalt(process.env.SALT);
+        const salt = await bcrypt.genSalt(10);        
         const hash = await bcrypt.hash(password,salt)
     
         const doc = new UserModel({
@@ -46,7 +46,7 @@ export const addUser = async (req, res)=>{
     }       
 }
 
-export const login = async (req,res)=>{
+const login = async (req,res)=>{
     try {
         /* const user = await UserModel.findOne({email:req.body.email}); */
         const user = await UserModel.findOne({ email: req.body.email }) || await ManagerModel.findOne({ email: req.body.email });
@@ -90,7 +90,7 @@ export const login = async (req,res)=>{
     }
 }
 
-export const checkUser = async(req, res) => {
+const checkUser = async(req, res) => {
     try {
         const user = await UserModel.findById(req.userId);
 
@@ -112,11 +112,11 @@ export const checkUser = async(req, res) => {
     }
 }
 
-export const addManager = async (req, res)=>{
+const addManager = async (req, res)=>{
     try {
     
         const password = req.body.password;
-        const salt = await bcrypt.genSalt(process.env.SALT);
+        const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password,salt)
     
         const doc = new ManagerModel({
@@ -152,3 +152,4 @@ export const addManager = async (req, res)=>{
         })
     }       
 }
+module.exports = {addManager, addUser, login, checkUser}
